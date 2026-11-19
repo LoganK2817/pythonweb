@@ -4,9 +4,11 @@ import covey
 
 def run_job(text_input: str, multiplier: int) -> dict:
     clean_text = text_input.strip()
-    transformed = covey.main(clean_text)
+    (transformed, string_id) = covey.main(clean_text)
+    transformed = f"COVEY OUTPUT >{transformed}<"
+    string_id = f"ID: {string_id}"
 
     return {
-        "line_count": multiplier,
         "preview": transformed,
+        "stringID": string_id,
     }
