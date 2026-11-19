@@ -61,10 +61,10 @@ def main():
     inputID = "" # get string info from user like "15.3.54.26" 
     inputID = inputID.split(".") # and break it into a list and extract info from the indexes
     
-    decodeKey = int(inputID[0]) # decode key from COVEY
-    rozFactor = int(inputID[1]) # roz factor from COVEY
-    hotSwapDegree = int(inputID[2]) # Hot-swap degree from COVEY
-    censorchar = int(inputID[3]) # Censored Char Digit from COVEY
+    decodeKey = 0 # decode key from COVEY
+    rozFactor = 0 # roz factor from COVEY
+    hotSwapDegree = 0 # Hot-swap degree from COVEY
+    censorchar = 0 # Censored Char Digit from COVEY
 
     
     outputbuild = [] # where the output is built
