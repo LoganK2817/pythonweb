@@ -54,18 +54,18 @@ def reverse_censor_char(input_string, censor_char_digit):
 
 def main():
     #<-----------------------------------User Input------------------------------------------->
-    encodedStringInput = input("INPUT>") # get input from user
+    encodedStringInput = "" # get input from user
     
     encodedList = list(encodedStringInput) # convert user string to list of characters
     
-    inputID = input("ID: ") # get string info from user like "15.3.54.26" 
+    inputID = "" # get string info from user like "15.3.54.26" 
     inputID = inputID.split(".") # and break it into a list and extract info from the indexes
     
     decodeKey = int(inputID[0]) # decode key from COVEY
     rozFactor = int(inputID[1]) # roz factor from COVEY
     hotSwapDegree = int(inputID[2]) # Hot-swap degree from COVEY
     censorchar = int(inputID[3]) # Censored Char Digit from COVEY
-    ark.br()
+
     
     outputbuild = [] # where the output is built
     
@@ -108,7 +108,7 @@ def main():
     #<--------------------------------Output Handling------------------------------------------------------>
     
     if degbugText: print(f"DEBUG TEXT:: outputbuild list:\n{outputbuild}\n-----")
-    print(f"OUT: >{''.join(outputbuild)}<")
+    # print(f"OUT: >{''.join(outputbuild)}<")
 
 
 
