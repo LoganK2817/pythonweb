@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 from worker import run_job
 
 app = Flask(__name__)
-DATA_DIR = os.environ.get("DATA_DIR", "/data")
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -22,7 +22,7 @@ def index():
             elif multiplier < 1 or multiplier > 100:
                 error = "Repeat count must be between 1 and 100."
             else:
-                result = run_job(text_input, multiplier, DATA_DIR)
+                result = run_job(text_input, multiplier)
         except ValueError:
             error = "Repeat count must be a valid integer."
 
