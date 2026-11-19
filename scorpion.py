@@ -52,19 +52,19 @@ def reverse_censor_char(input_string, censor_char_digit):
         else: result.append(char)
     return result # return uncensored result list
 
-def main():
+def main(web_input,web_stringid):
     #<-----------------------------------User Input------------------------------------------->
-    encodedStringInput = "" # get input from user
+    encodedStringInput = web_input # get input from user
     
     encodedList = list(encodedStringInput) # convert user string to list of characters
     
-    inputID = "" # get string info from user like "15.3.54.26" 
+    inputID = web_stringid # get string info from user like "15.3.54.26" 
     inputID = inputID.split(".") # and break it into a list and extract info from the indexes
     
-    decodeKey = 0 # decode key from COVEY
-    rozFactor = 0 # roz factor from COVEY
-    hotSwapDegree = 0 # Hot-swap degree from COVEY
-    censorchar = 0 # Censored Char Digit from COVEY
+    decodeKey = inputID[0] # decode key from COVEY
+    rozFactor = inputID[1] # roz factor from COVEY
+    hotSwapDegree = inputID[2] # Hot-swap degree from COVEY
+    censorchar = inputID[3] # Censored Char Digit from COVEY
 
     
     outputbuild = [] # where the output is built
@@ -109,3 +109,4 @@ def main():
     
     if degbugText: print(f"DEBUG TEXT:: outputbuild list:\n{outputbuild}\n-----")
     # print(f"OUT: >{''.join(outputbuild)}<")
+    return ''.join(outputbuild)

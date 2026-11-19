@@ -1,6 +1,6 @@
 import importlib
 import covey
-# import scorpion
+import scorpion
 
 def run_job(
     text_input: str,
@@ -12,23 +12,24 @@ def run_job(
     cc: int = 0,
 ) -> dict:
     importlib.reload(covey)
-    # importlib.reload(scorpion)
+    importlib.reload(scorpion)
     clean_text = text_input.strip()
 
     
 
     if mode_value == 1:
-        # transformed, string_id = scorpion.main(clean_text)
-        transformed, string_id = ("SCORPION", "192.168.17.170")
-        preview = f"SCORPION OUTPUT >{transformed}< | PARAM: {scorpion_param}"
-        formatted_id = f"ID: {string_id} | mode: 1 | param: {scorpion_param}"
+        transformed = scorpion.main(clean_text,scorpion_param)
+
+        stringInfo = scorpion_param.split(".")
+        
+        preview = f">{transformed}<"
+        formatted_id = f"Decode= {stringInfo[0]}, RozFactor= {stringInfo[1]}, HsD= {stringInfo[2]}, CensorChar= {stringInfo[3]}"
     else:
         transformed, string_id = covey.main(clean_text,roz_factor,hs_d,char_len_in_hsd,cc)
         preview = (
-            f"COVEY OUTPUT >{transformed}< | "
-            f"RozFactor={roz_factor}, HsD={hs_d}, CharLenInHsD={char_len_in_hsd}, CC={cc}"
+            f">{transformed}< "
         )
-        formatted_id = f"ID: {string_id} | mode: 0"
+        formatted_id = f"ID: {string_id}"
 
     return {
         "preview": preview,
