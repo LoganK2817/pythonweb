@@ -49,12 +49,6 @@
       letter-spacing: -0.02em;
     }
 
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
     .card {
       background: var(--card);
       border: 1px solid var(--card-border);
@@ -75,7 +69,27 @@
       color: var(--text);
     }
 
-    textarea {
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    textarea,
+    input[type="text"],
+    input[type="number"] {
       width: 100%;
       padding: 0.65rem 0.75rem;
       font-family: inherit;
@@ -84,12 +98,17 @@
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      resize: vertical;
-      min-height: 90px;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    textarea:focus {
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus,
+    input[type="number"]:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
@@ -205,6 +224,39 @@
           </button>
         </div>
 
+        <div id="covey_input_group">
+          <div class="field">
+            <label for="roz_factor">RozFactor (INT)</label>
+            <input id="roz_factor" name="roz_factor" type="number" step="1"
+                   value="{{ request.form.get('roz_factor', '0') }}" />
+          </div>
+
+          <div class="field">
+            <label for="hs_d">HsD (INT)</label>
+            <input id="hs_d" name="hs_d" type="number" step="1"
+                   value="{{ request.form.get('hs_d', '0') }}" />
+          </div>
+
+          <div class="field checkbox-row">
+            <input id="char_len_in_hsd" name="char_len_in_hsd" type="checkbox" value="1"
+                   {% if request.form.get("char_len_in_hsd") == "1" %}checked{% endif %} />
+            <label for="char_len_in_hsd">Char Length in HsD (BOOL)</label>
+          </div>
+
+          <div class="field">
+            <label for="cc">CC (INT)</label>
+            <input id="cc" name="cc" type="number" step="1"
+                   value="{{ request.form.get('cc', '0') }}" />
+          </div>
+        </div>
+
+        <div class="field" id="scorpion_input_group" style="display: none;">
+          <label for="scorpion_param">SCORPION Parameter</label>
+          <input id="scorpion_param" name="scorpion_param" type="text"
+                 placeholder="e.g. 12.25.8.2"
+                 value="{{ request.form.get('scorpion_param', '') }}" />
+        </div>
+
         <button type="submit">Run Script</button>
       </form>
 
@@ -227,11 +279,21 @@
   <script>
     const toggleBtn = document.getElementById("mode_toggle");
     const modeInput = document.getElementById("mode_flag");
+    const coveyGroup = document.getElementById("covey_input_group");
+    const scorpionGroup = document.getElementById("scorpion_input_group");
+    const scorpionInput = document.getElementById("scorpion_param");
 
     function syncModeLabel() {
       const isScorpion = modeInput.value === "1";
       toggleBtn.textContent = isScorpion ? "SCORPION" : "COVEY";
       toggleBtn.dataset.state = isScorpion ? "1" : "0";
+
+      coveyGroup.style.display = isScorpion ? "none" : "block";
+      scorpionGroup.style.display = isScorpion ? "block" : "none";
+
+      if (!isScorpion) {
+        scorpionInput.value = "";
+      }
     }
 
     toggleBtn.addEventListener("click", () => {

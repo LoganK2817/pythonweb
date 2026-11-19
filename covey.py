@@ -137,13 +137,13 @@ def censorChar(string_input,input_censor_char_digit):
     
     return (result,censor_char_digit)
 
-def main(web_input):
+def main(web_input,rozFactor,hotswapDegree,includeCharLength,censor):
     
     
-    globalVars.rozFactor = 4
-    globalVars.hotSwapDegree = 5
+    globalVars.rozFactor = rozFactor
+    globalVars.hotSwapDegree = hotswapDegree
     globalVars.includeCharCount = "y"
-    globalVars.censorchar = 2
+    globalVars.censorchar = censor
     globalVars.StringInput = web_input
     
     globalVars.rawString = list(web_input.lower())
