@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Python Script UI</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input, textarea, button { width: 100%; padding: 0.5rem; margin-top: 0.25rem; box-sizing: border-box; }
+    button { margin-top: 1rem; cursor: pointer; }
+    pre { background: #f4f4f5; padding: 1rem; overflow-x: auto; }
+    .error { color: #b91c1c; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>Python Script Runner</h1>
+
+  <form method="POST">
+    <label for="text_input">Input Text</label>
+    <textarea id="text_input" name="text_input" rows="3" required>{{ request.form.get("text_input", "") }}</textarea>
+
+    <label for="multiplier">Repeat Count (1–100)</label>
+    <input id="multiplier" name="multiplier" type="number" min="1" max="100"
+           value="{{ request.form.get('multiplier', '3') }}" required />
+
+    <button type="submit">Run Script</button>
+  </form>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  {% if result %}
+    <h2>Output</h2>
+    <p><strong>Saved to /data:</strong> {{ result.saved_file }}</p>
+    <pre>{{ result.preview }}</pre>
+  {% endif %}
+</body>
+</html>

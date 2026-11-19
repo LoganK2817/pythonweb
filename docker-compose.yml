@@ -1,0 +1,12 @@
+services:
+  py-script-ui:
+    build: .
+    image: py-script-ui:local
+    container_name: py-script-ui
+    ports:
+      - "8085:8000"
+    volumes:
+      - /DATA/AppData/py-tool-ui/output:/data
+    environment:
+      - DATA_DIR=/data
+    restart: unless-stopped
