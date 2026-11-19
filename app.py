@@ -1,9 +1,7 @@
-import os
 from flask import Flask, render_template, request
 from worker import run_job
 
 app = Flask(__name__)
-
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -13,18 +11,13 @@ def index():
 
     if request.method == "POST":
         text_input = request.form.get("text_input", "")
-        raw_mult = request.form.get("multiplier", "1")
+        raw_mode = request.form.get("mode_flag", "0")
+        mode_value = 1 if raw_mode == "1" else 0
 
-        try:
-            multiplier = int(raw_mult)
-            if not text_input.strip():
-                error = "Please enter some text."
-            elif multiplier < 1 or multiplier > 100:
-                error = "Repeat count must be between 1 and 100."
-            else:
-                result = run_job(text_input, multiplier)
-        except ValueError:
-            error = "Repeat count must be a valid integer."
+        if not text_input.strip():
+            error = "Please enter some text."
+        else:
+            result = run_job(text_input, mode_value)
 
     return render_template("index.html", result=result, error=error)
 

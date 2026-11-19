@@ -2,38 +2,244 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Python Script UI</title>
+  <title>PANTHALASSA</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
-    label { display: block; margin-top: 1rem; font-weight: 600; }
-    input, textarea, button { width: 100%; padding: 0.5rem; margin-top: 0.25rem; box-sizing: border-box; }
-    button { margin-top: 1rem; cursor: pointer; }
-    pre { background: #f4f4f5; padding: 1rem; overflow-x: auto; }
-    .error { color: #b91c1c; font-weight: 600; }
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --accent-text: #082f49;
+      --input-bg: #0f172a;
+      --code-bg: #020617;
+      --error-bg: rgba(239, 68, 68, 0.12);
+      --error-border: rgba(239, 68, 68, 0.45);
+      --error-text: #fca5a5;
+      --success-text: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2.5rem 1rem;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.65rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .field {
+      margin-bottom: 1.15rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      resize: vertical;
+      min-height: 90px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .toggle-btn {
+      padding: 0.6rem 1.15rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #f8fafc;
+      background: #334155;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .toggle-btn[data-state="1"] {
+      color: #450a0a;
+      background: #f87171;
+      border-color: #ef4444;
+    }
+
+    button[type="submit"] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-text);
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.05s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--accent-hover);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(1px);
+    }
+
+    .error {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      border-radius: 8px;
+      color: var(--error-text);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    .output-card {
+      margin-top: 1.5rem;
+    }
+
+    .output-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .output-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    pre {
+      margin: 0 0 0.75rem;
+      padding: 1rem;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    pre:last-child {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 <body>
-  <h1>Python Script Runner</h1>
+  <div class="container">
+    <div class="header">
+      <h1>PANTHALASSA</h1>
+    </div>
 
-  <form method="POST">
-    <label for="text_input">Input Text</label>
-    <textarea id="text_input" name="text_input" rows="3" required>{{ request.form.get("text_input", "") }}</textarea>
+    <div class="card">
+      <form method="POST">
+        <div class="field">
+          <label for="text_input">Input Text</label>
+          <textarea id="text_input" name="text_input" rows="3" required>{{ request.form.get("text_input", "") }}</textarea>
+        </div>
 
-    <label for="multiplier">Repeat Count (1–100)</label>
-    <input id="multiplier" name="multiplier" type="number" min="1" max="100"
-           value="{{ request.form.get('multiplier', '3') }}" required />
+        <div class="field">
+          <label>Mode Selection</label>
+          <input type="hidden" id="mode_flag" name="mode_flag"
+                 value="{{ request.form.get('mode_flag', '0') }}" />
+          <button type="button" id="mode_toggle" class="toggle-btn">
+            {{ "SCORPION" if request.form.get("mode_flag", "0") == "1" else "COVEY" }}
+          </button>
+        </div>
 
-    <button type="submit">Run Script</button>
-  </form>
+        <button type="submit">Run Script</button>
+      </form>
 
-  {% if error %}
-    <p class="error">{{ error }}</p>
-  {% endif %}
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+    </div>
 
-  {% if result %}
-    <h2>Output</h2>
-    <pre>{{ result.preview }}</pre>
-    <pre>{{ result.stringID }}</pre>
-  {% endif %}
+    {% if result %}
+      <div class="card output-card">
+        <div class="output-header">
+          <h2>Output</h2>
+        </div>
+        <pre>{{ result.preview }}</pre>
+        <pre>{{ result.stringID }}</pre>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById("mode_toggle");
+    const modeInput = document.getElementById("mode_flag");
+
+    function syncModeLabel() {
+      const isScorpion = modeInput.value === "1";
+      toggleBtn.textContent = isScorpion ? "SCORPION" : "COVEY";
+      toggleBtn.dataset.state = isScorpion ? "1" : "0";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      modeInput.value = modeInput.value === "1" ? "0" : "1";
+      syncModeLabel();
+    });
+
+    syncModeLabel();
+  </script>
 </body>
 </html>
