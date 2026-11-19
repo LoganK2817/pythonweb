@@ -14,5 +14,7 @@ def run_job(text_input: str, multiplier: int, data_dir: str) -> dict:
         f.write(transformed + "\n")
 
     return {
-        transformed
+        "line_count": multiplier,
+        "preview": transformed,
+        "saved_file": filename,
     }
